@@ -1,0 +1,85 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "",
+      "upload": "image"
+    },
+    "_meta": {
+      "title": "Load Input Image"
+    }
+  },
+  "2": {
+    "class_type": "WanVideoModelLoader",
+    "inputs": {
+      "model_name": "wan2.1-i2v-720p-14B",
+      "precision": "fp16",
+      "load_vae": true
+    },
+    "_meta": {
+      "title": "Load Wan Video Model"
+    }
+  },
+  "3": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "smooth animation, high quality, cinematic lighting, professional",
+      "clip": ["2", "clip"]
+    },
+    "_meta": {
+      "title": "Positive Prompt"
+    }
+  },
+  "4": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "text": "ugly, deformed, noisy, blurry, low quality, distorted, extra limbs, bad anatomy",
+      "clip": ["2", "clip"]
+    },
+    "_meta": {
+      "title": "Negative Prompt"
+    }
+  },
+  "5": {
+    "class_type": "WanVideoSampler",
+    "inputs": {
+      "model": ["2", "model"],
+      "positive": ["3", "conditioning"],
+      "negative": ["4", "conditioning"],
+      "vae": ["2", "vae"],
+      "image": ["1", "image"],
+      "steps": 30,
+      "cfg": 7.0,
+      "seed": 12345,
+      "video_length": 48,
+      "fps": 24
+    },
+    "_meta": {
+      "title": "Wan Video Sampler"
+    }
+  },
+  "6": {
+    "class_type": "SaveAnimatedWEBP",
+    "inputs": {
+      "images": ["5", "images"],
+      "filename_prefix": "wan_video",
+      "fps": 24,
+      "quality": 90,
+      "method": "default"
+    },
+    "_meta": {
+      "title": "Save Animated WEBP"
+    }
+  },
+  "7": {
+    "class_type": "SaveAnimatedPNG",
+    "inputs": {
+      "images": ["5", "images"],
+      "filename_prefix": "wan_video_png",
+      "fps": 24
+    },
+    "_meta": {
+      "title": "Save Animated PNG"
+    }
+  }
+}

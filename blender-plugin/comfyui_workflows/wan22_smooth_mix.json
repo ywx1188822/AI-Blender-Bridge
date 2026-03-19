@@ -1,0 +1,86 @@
+{
+  "description": "Wan 2.2 Smooth Mix 图生视频工作流 - 动作流畅，无色差",
+  "version": "1.0",
+  "created_date": "2026-03-17",
+  "source": "ComfyUI 官方工作流",
+  "nodes": {
+    "55": {
+      "class_type": "LoadImage",
+      "description": "加载输入图像"
+    },
+    "59": {
+      "class_type": "LayerUtility: ImageScaleByAspectRatio V2",
+      "description": "按宽高比缩放图像到 960px"
+    },
+    "56": {
+      "class_type": "CLIPVisionLoader",
+      "description": "加载 Wan 2.1 NSFW CLIP Vision"
+    },
+    "57": {
+      "class_type": "CLIPVisionEncode",
+      "description": "CLIP 视觉编码"
+    },
+    "3": {
+      "class_type": "CLIPLoader",
+      "description": "加载 Wan CLIP (umt5_xxl)"
+    },
+    "116": {
+      "class_type": "CLIPTextEncode",
+      "description": "正向提示词编码"
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "description": "负向提示词编码"
+    },
+    "4": {
+      "class_type": "VAELoader",
+      "description": "加载 Wan 2.1 VAE"
+    },
+    "9": {
+      "class_type": "WanImageToVideo",
+      "description": "图像到视频转换"
+    },
+    "38": {
+      "class_type": "UNETLoader",
+      "description": "加载 Smooth Mix UNet (High)"
+    },
+    "39": {
+      "class_type": "UNETLoader",
+      "description": "加载 Smooth Mix UNet (Low)"
+    },
+    "36": {
+      "class_type": "KSamplerAdvanced",
+      "description": "第一阶段采样 (steps 0-5)"
+    },
+    "37": {
+      "class_type": "KSamplerAdvanced",
+      "description": "第二阶段采样 (steps 5-10000)"
+    },
+    "17": {
+      "class_type": "VAEDecode",
+      "description": "VAE 解码"
+    },
+    "23": {
+      "class_type": "RIFE VFI",
+      "description": "RIFE 帧插值 (2x 插帧)"
+    },
+    "46": {
+      "class_type": "VHS_VideoCombine",
+      "description": "视频合成 (H.264 MP4)"
+    },
+    "47": {
+      "class_type": "VHS_VideoCombine",
+      "description": "视频合成 (插帧后版本)"
+    }
+  },
+  "parameters": {
+    "steps": 10,
+    "cfg": 1,
+    "sampler": "euler_ancestral",
+    "seed": -1,
+    "frame_rate": 16,
+    "duration_seconds": 6,
+    "output_format": "video/h264-mp4",
+    "crf": 19
+  }
+}
